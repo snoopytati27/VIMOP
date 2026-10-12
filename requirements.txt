@@ -1,0 +1,23 @@
+# VIMOP — dependencias (Windows 10/11, Python 3.10 – 3.12; probado también con 3.14)
+#
+# pip instala PyTorch en versión CPU. Para usar una GPU NVIDIA, DESPUÉS ejecute:
+#   pip install --force-reinstall torch torchvision --index-url https://download.pytorch.org/whl/cu126
+# (ver README.md, sección "Instalación").
+#
+# Versiones con las que se probó el proyecto (octubre de 2026): ultralytics 8.4.38 · torch 2.11.0+cu126 ·
+# opencv-python 5.0.0 · numpy 2.3.5 · shapely 2.1.2 · PySide6 6.11.2 · easyocr 1.7.2 · Pillow 12.2.0 · lap 0.5.13
+
+ultralytics>=8.3.0        # YOLO11 (detección + segmentación) y trackers ByteTrack / BoT-SORT; instala PyTorch y PyYAML
+opencv-python>=4.8.0      # captura (webcam / IP / RTSP / video), imágenes, homografía, histogramas
+numpy>=1.24               # arreglos y matrices (frames, máscaras, puntos)
+Pillow>=9.0               # orientación EXIF de las fotos de celular (modo foto)
+shapely>=2.0              # geometría: polígonos de los puestos e intersección línea-puesto
+PySide6>=6.7              # interfaz gráfica, hilos y dibujo del resultado
+easyocr>=1.7.1            # OCR de placas
+lap>=0.5.12               # asignación lineal que usa ByteTrack
+PyYAML>=6.0               # dataset.yaml de las herramientas de entrenamiento (tools/); ya lo trae ultralytics
+
+# Solo para regenerar el informe técnico (docs/informe/); no hacen falta para ejecutar VIMOP:
+# Pygments>=2.17
+# python-docx>=1.1
+# markdown>=3.5

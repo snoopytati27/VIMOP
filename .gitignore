@@ -1,0 +1,24 @@
+# Datos: fotos/videos/recortes con placas y personas reales (solo locales)
+datos/
+_privado/
+results/
+runs/
+*.db
+*.log
+*.mp4
+*.avi
+*.zip
+wheels_labels*.json
+# Experimentos y material de trabajo
+models/experimental/
+docs/PROMPT_NUEVO_CHAT_*
+docs/RECURSOS_DEL_PROYECTO.docx
+docs/RECURSOS_DEL_PROYECTO.pdf
+# Entorno
+__pycache__/
+*.pyc
+.vscode/
+.venv/
+
+# Documentacion (solo local)
+docs/
