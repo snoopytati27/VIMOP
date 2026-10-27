@@ -26,6 +26,7 @@ class IdentJob:
     moto_id: int
     crop: np.ndarray
     want_plate: bool = True
+    moto_box: tuple | None = None          # caja real de la moto dentro del recorte (el recorte trae margen de contexto)
 
 
 @dataclass
@@ -87,7 +88,7 @@ class IdentificationWorker(threading.Thread):
             res = IdentResult(job.moto_id)
             try:
                 if job.want_plate and self.plate_available:
-                    res.plate, res.did_plate = self.plate_reader.read(job.crop), True
+                    res.plate, res.did_plate = self.plate_reader.read(job.crop, job.moto_box), True
             except Exception:
                 log.exception("Error identificando MOTO #%d", job.moto_id)
             self.results.put(res)

@@ -219,10 +219,10 @@ class VimopPipeline:
                 rec.score_history.append(score_row(analysis))
                 rec.space_history.append(analysis.space_id)
                 rec.display_class = classify_score(analysis.score)     # sin histéresis
-            crop, _ = safe_crop(frame, det.bbox, 0.05)
+            crop, used = safe_crop(frame, det.bbox, self._plate_margin())
             if crop.size:
                 if self.ident.plate_available and det.height >= int(cfg.PLATE_MIN_MOTO_HEIGHT_PX):
-                    read = self.ident.plate_reader.read(crop)
+                    read = self.ident.plate_reader.read(crop, self._box_in_crop(det.bbox, used))
                     if read is not None and read.confidence >= float(cfg.PLATE_MIN_CONFIDENCE):
                         registry.add_plate(rec, read.text, read.confidence, read.method, now)
             info = rec.to_dict(scfg)
@@ -266,12 +266,20 @@ class VimopPipeline:
                       and fc - rec.last_ocr_frame >= int(cfg.OCR_INTERVAL))
         if not want_plate:
             return
-        crop, _ = safe_crop(frame, det.bbox, 0.05)
+        crop, used = safe_crop(frame, det.bbox, self._plate_margin())
         if crop.size == 0:
             return
         rec.last_ocr_frame = fc
-        if self.ident.submit(IdentJob(rec.moto_id, crop.copy())):
+        if self.ident.submit(IdentJob(rec.moto_id, crop.copy(), moto_box=self._box_in_crop(det.bbox, used))):
             self.pending_ident.add(rec.moto_id)
+
+    @staticmethod
+    def _box_in_crop(bbox, used) -> tuple[float, float, float, float]:
+        return (bbox[0] - used[0], bbox[1] - used[1], bbox[2] - used[0], bbox[3] - used[1])
+
+    def _plate_margin(self) -> float:
+        reader = self.ident.plate_reader
+        return reader.crop_margin if reader is not None else 0.05
 
     def _alerts(self, motos: list[MotoView], now: datetime, t: float):
         texts, ids, current = self._alert_reasons(motos)

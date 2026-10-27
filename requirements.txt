@@ -13,7 +13,7 @@ numpy>=1.24               # arreglos y matrices (frames, máscaras, puntos)
 Pillow>=9.0               # orientación EXIF de las fotos de celular (modo foto)
 shapely>=2.0              # geometría: polígonos de los puestos e intersección línea-puesto
 PySide6>=6.7              # interfaz gráfica, hilos y dibujo del resultado
-easyocr>=1.7.1            # OCR de placas
+easyocr>=1.7.1            # OCR de placas (respaldo si no hay fast-plate-ocr)
 lap>=0.5.12               # asignación lineal que usa ByteTrack
 PyYAML>=6.0               # dataset.yaml de las herramientas de entrenamiento (tools/); ya lo trae ultralytics
 
@@ -21,3 +21,9 @@ PyYAML>=6.0               # dataset.yaml de las herramientas de entrenamiento (t
 # Pygments>=2.17
 # python-docx>=1.1
 # markdown>=3.5
+
+# OPCIONAL (recomendado): lector de placas fast-plate-ocr (MIT, ~5 MB; el modelo se baja la 1.ª vez). Instalar ASÍ, sin dependencias,
+# para que no reemplace opencv-python por opencv-python-headless:
+#   pip install --no-deps fast-plate-ocr
+#   pip install onnxruntime
+# Con PLATE_OCR_BACKEND = "auto" (config.py) VIMOP lo usa si está instalado y deja EasyOCR de respaldo.

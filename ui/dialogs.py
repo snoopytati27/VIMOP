@@ -41,6 +41,7 @@ class SettingsDialog(QDialog):
         ("Identificación", [
             ("OCR_INTERVAL", "OCR cada N frames", "int", (1, 300)),
             ("PLATE_REGEX", "Regex de placa", "text", None),
+            ("PLATE_OCR_BACKEND", "OCR de placas (fast = fast-plate-ocr)", "combo", ["auto", "fast", "easyocr"]),
             ("HISTORY_LENGTH", "Historial de score (N)", "int", (1, 200)),
         ]),
         ("Análisis", [
